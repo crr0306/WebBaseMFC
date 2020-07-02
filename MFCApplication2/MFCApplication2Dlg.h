@@ -42,4 +42,5 @@ private:
 	CEdit targetEdit;
 public:
 	afx_msg void OnEnChangeEdit2();
+	afx_msg void OnBnClickedButton2();
 };

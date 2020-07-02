@@ -75,6 +75,7 @@ BEGIN_MESSAGE_MAP(CMFCApplication2Dlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &CMFCApplication2Dlg::OnBnClickedButton1)
 	ON_EN_CHANGE(IDC_EDIT1, &CMFCApplication2Dlg::OnEnChangeEdit1)
 	ON_EN_CHANGE(IDC_EDIT2, &CMFCApplication2Dlg::OnEnChangeEdit2)
+	ON_BN_CLICKED(IDC_BUTTON2, &CMFCApplication2Dlg::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 
@@ -110,7 +111,7 @@ BOOL CMFCApplication2Dlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
-	m_HtmlView.CreateFromStatic(IDC_STATIC_HTML, this);
+	m_HtmlView.CreateFromStatic(IDC_STATIC_HTML, this,NULL);
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -168,7 +169,6 @@ HCURSOR CMFCApplication2Dlg::OnQueryDragIcon()
 void CMFCApplication2Dlg::OnBnClickedOk()
 {
 	// TODO: 在此添加控件通知处理程序代码
-	AfxMessageBox(_T("测试成功！"));
 	CDialogEx::OnOK();
 }
 
@@ -209,7 +209,7 @@ void CMFCApplication2Dlg::OnBnClickedButton1()
 		memcpy(pch, content, content.GetLength() * sizeof(TCHAR));
 		content = UTF8ToUnicode(pch);//转换编码，不然就乱码了
 		targetEdit.SetWindowText(content);
-		AfxMessageBox(content);
+		
 	}
 	pfile->Close();
 	delete pfile;
@@ -264,3 +264,13 @@ void CMFCApplication2Dlg::OnEnChangeEdit2()
 }
 
 
+
+
+void CMFCApplication2Dlg::OnBnClickedButton2()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	CString url;
+	sourceEdit.GetWindowText(url);
+	m_HtmlView.OnInitialUpdate(url);
+
+}

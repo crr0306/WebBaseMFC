@@ -65,12 +65,18 @@ void CBaseHtmlView::PostNcDestroy()
 }
 
 
-void CBaseHtmlView::OnInitialUpdate()
+void CBaseHtmlView::OnInitialUpdate(CString url)
 {
 	CHtmlView::OnInitialUpdate();
-
+	MessageBox(url);
+	if ( !url.IsEmpty()) {
+		Navigate2(url, NULL, NULL); //这里的网站可以任意更换
+	}
+	else {
+		Navigate2(L"http://www.baidu.com", NULL, NULL); //这里的网站可以任意更换
+	}
 	// TODO: 在此添加专用代码和/或调用基类
-	Navigate2(L"http://blog.csdn.net/qq_20828983?viewmode=contents", NULL, NULL); //这里的网站可以任意更换
+	
 }
 
 
@@ -96,7 +102,7 @@ void CBaseHtmlView::OnSize(UINT nType, int cx, int cy)
 		m_wndBrowser.SetWindowPos(NULL, rect.left, rect.top, 962, 632, SWP_NOACTIVATE | SWP_NOZORDER);
 	}
 }
-BOOL CBaseHtmlView::CreateFromStatic(UINT nID, CWnd* pParent)
+BOOL CBaseHtmlView::CreateFromStatic(UINT nID, CWnd* pParent,CString url)
 {
 	CWnd* pStatic = pParent->GetDlgItem(nID);
 	if (pStatic == NULL)
@@ -110,7 +116,7 @@ BOOL CBaseHtmlView::CreateFromStatic(UINT nID, CWnd* pParent)
 	if (!CHtmlView::Create(NULL, NULL, (WS_CHILD | WS_VISIBLE), rc, pParent, nID, NULL))
 		return FALSE;
 
-	OnInitialUpdate();  //加载网页或html
+	OnInitialUpdate(url);  //加载网页或html
 	SetSilent(TRUE);//add by wh ,bid pop script dlg  true表示允许界面弹出对话框
 	return TRUE;
 }

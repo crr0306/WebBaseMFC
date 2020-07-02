@@ -30,10 +30,10 @@ protected:
 public:
 	afx_msg void OnDestroy();
 	virtual void PostNcDestroy();
-	virtual void OnInitialUpdate();
+	virtual void OnInitialUpdate(CString url);
 	afx_msg int OnMouseActivate(CWnd* pDesktopWnd, UINT nHitTest, UINT message);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
-	BOOL CreateFromStatic(UINT nID, CWnd* pParent);
+	BOOL CreateFromStatic(UINT nID, CWnd* pParent, CString url);
 };
 
 
