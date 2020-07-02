@@ -43,4 +43,5 @@ private:
 public:
 	afx_msg void OnEnChangeEdit2();
 	afx_msg void OnBnClickedButton2();
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };

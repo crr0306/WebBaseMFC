@@ -16,6 +16,7 @@
 #include "CBaseHtmlView.h"
 
 CBaseHtmlView m_HtmlView;
+CPoint Old;//存放对话框的宽和高
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
 
 class CAboutDlg : public CDialogEx
@@ -76,6 +77,7 @@ BEGIN_MESSAGE_MAP(CMFCApplication2Dlg, CDialogEx)
 	ON_EN_CHANGE(IDC_EDIT1, &CMFCApplication2Dlg::OnEnChangeEdit1)
 	ON_EN_CHANGE(IDC_EDIT2, &CMFCApplication2Dlg::OnEnChangeEdit2)
 	ON_BN_CLICKED(IDC_BUTTON2, &CMFCApplication2Dlg::OnBnClickedButton2)
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 
@@ -273,4 +275,43 @@ void CMFCApplication2Dlg::OnBnClickedButton2()
 	sourceEdit.GetWindowText(url);
 	m_HtmlView.OnInitialUpdate(url);
 
+}
+
+
+void CMFCApplication2Dlg::OnSize(UINT nType, int cx, int cy)
+{
+	CDialogEx::OnSize(nType, cx, cy);
+
+	
+
+	// TODO: 在此处添加消息处理程序代码
+	float fsp[2];
+	POINT Newp; //获取现在对话框的大小(VS2005中是CPOINT)
+	CRect recta;
+	GetClientRect(&recta); //取客户区大小 
+	Newp.x = recta.right - recta.left;
+	Newp.y = recta.bottom - recta.top;
+	fsp[0] = (float)Newp.x / Old.x;
+	fsp[1] = (float)Newp.y / Old.y;
+	CRect Rect;
+	int woc;
+	CPoint OldTLPoint, TLPoint; //左上角
+	CPoint OldBRPoint, BRPoint; //右下角
+	HWND hwndChild = ::GetWindow(m_hWnd, GW_CHILD); //列出所有控件 
+	while (hwndChild)
+	{
+		woc = ::GetDlgCtrlID(hwndChild);//取得ID
+		GetDlgItem(woc)->GetWindowRect(Rect);
+		ScreenToClient(Rect);
+		OldTLPoint = Rect.TopLeft();
+		TLPoint.x = long(OldTLPoint.x * fsp[0]);
+		TLPoint.y = long(OldTLPoint.y * fsp[1]);
+		OldBRPoint = Rect.BottomRight();
+		BRPoint.x = long(OldBRPoint.x * fsp[0]);
+		BRPoint.y = long(OldBRPoint.y * fsp[1]); //高度不可读的控件（如:combBox),不要改变此值.
+		Rect.SetRect(TLPoint, BRPoint);
+		GetDlgItem(woc)->MoveWindow(Rect, TRUE);
+		hwndChild = ::GetWindow(hwndChild, GW_HWNDNEXT);
+	}
+	Old = Newp;
 }
