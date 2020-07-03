@@ -4,9 +4,7 @@
 //#error "Windows CE 不支持 CHtmlView。"
 //#endif 
 #pragma once
-
 #include <afxhtml.h>
-#include <comdef.h>
 // CBaseHtmlView HTML 视图
 
 class CBaseHtmlView : public CHtmlView
